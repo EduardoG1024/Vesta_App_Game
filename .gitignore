@@ -1,11 +1,9 @@
-#ENV
+
 .env
 
 assets/
 Frontend/
 
-#NODE MODULES
 node_modules/
 
-# 
 package-lock.json
