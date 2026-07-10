@@ -1,10 +1,11 @@
 import express from "express";
 import { SignUpCreator } from "../../classes/SignUp-Creator.js";
 import { SignUpValidator } from "../../classes/SignUp-Validator.js";
+import { supabase } from "../../config/supabase-config.js";
 
 const users = [];
 
-export class VestaControllers {
+export class AuthControllers {
 
     constructor() {}
 
@@ -12,7 +13,7 @@ export class VestaControllers {
         return res.status(200).json({message: 'Welcome to VESTA'});
     }
 
-    static RegisterSignUp = (req, res) => {
+    static RegisterSignUp = async (req, res) => {
         const {battletag, password, confirmPassword} = req.body;
         if (!battletag || !password || !confirmPassword)
             return res.status(400).json({message: 'Something Went Wrong', error: 'User Credentials NOT Found'});
@@ -33,9 +34,4 @@ export class VestaControllers {
         return res.status(200).json({message: 'Login'});
     }
 
-    static GetProfile = (req, res) => {
-        return res.status(200).json({
-            message: 'User Profile',
-        })
-    }
 }

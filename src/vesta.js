@@ -3,7 +3,7 @@ import session from 'express-session';
 import path from 'path';
 
 import { envs } from './config/config.js';
-import authRouter from './presentation/routes/routes.js';
+import authRouter from './presentation/routes/auth-routes.js';
 
 const app = express();
 const __dirname = import.meta.dirname;
