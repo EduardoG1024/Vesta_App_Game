@@ -1,19 +1,19 @@
-import { UUID } from '../config/uuid.js'
+//import { UUID } from '../config/uuid.js'
 
 
 export class SignUpCreator {
 
-    constructor(battletag, password, confirmPassword) {
-        this.battletag = this.battletagValidator(battletag);
+    constructor(usertag, password, confirmPassword) {
+        this.usertag = this.usertagValidator(usertag);
         this.password = password;
         this.confirmPassword = this.confirmPasswordValidator(password, confirmPassword);
-        this.uuid = UUID();
+        this.status = true;
         this.createdAt = new Date();
     }
 
-    battletagValidator(battletag) {
-        if (!battletag.includes('#')) return false;
-        return battletag;
+    usertagValidator(usertag) {
+        if (usertag.length > 50) return false;
+        return usertag;
     }
 
     confirmPasswordValidator(password, confirmPassword) {

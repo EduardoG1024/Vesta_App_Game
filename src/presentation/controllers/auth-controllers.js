@@ -1,9 +1,5 @@
 import express from "express";
-import { SignUpCreator } from "../../classes/SignUp-Creator.js";
-import { SignUpValidator } from "../../classes/SignUp-Validator.js";
-import { supabase } from "../../config/supabase-config.js";
-
-const users = [];
+import { SignUpCreator, SignUpValidator, SignUpBcrypt, SignUpFunction } from "../../auth-classes/index.js";
 
 export class AuthControllers {
 
@@ -13,23 +9,32 @@ export class AuthControllers {
         return res.status(200).json({message: 'Welcome to VESTA'});
     }
 
+    // REGISTER USER
     static RegisterSignUp = async (req, res) => {
-        const {battletag, password, confirmPassword} = req.body;
-        if (!battletag || !password || !confirmPassword)
-            return res.status(400).json({message: 'Something Went Wrong', error: 'User Credentials NOT Found'});
+        const {usertag, password, confirmPassword} = req.body;
+        if (!usertag || !password || !confirmPassword)
+            return res.status(400).json({message: 'Oh Moons! Something Went Wrong', error: 'User Credentials NOT Found'});
 
         
-        const signUp = new SignUpCreator(battletag, password, confirmPassword);
+        const signUp = new SignUpCreator(usertag, password, confirmPassword);
         const validation = new SignUpValidator(signUp);
-        if (validation.validation !== true) return res.status(400).json({message: 'Invalid Credentials'});
+        if (validation.validation !== true) return res.status(400).json(
+            {
+                message: 'Invalid Credentials',
+                hint: 'Verify Your UserTag or Your Password',
+            });
+        
 
-        console.log(signUp);
+        const hash = await new SignUpBcrypt(password).passhash();
+        SignUpFunction(signUp.usertag, hash, signUp.status);
+
         return res.status(200).json({
-            message: 'Valid Credentials and Completed Register',
-            info: signUp,
+            message: 'Valid Credentials',
+            info: `Hello ${signUp.usertag}, Your Account has Been Created!`,
         });
     }
 
+    // LOGIN USER
     static LoginSignIn = (req, res) => {
         return res.status(200).json({message: 'Login'});
     }
