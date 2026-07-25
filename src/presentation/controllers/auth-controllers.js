@@ -26,7 +26,8 @@ export class AuthControllers {
         
 
         const hash = await new SignUpBcrypt(password).passhash();
-        SignUpFunction(signUp.usertag, hash, signUp.status);
+        const supaResult = await SignUpFunction(signUp.usertag, hash, signUp.status);
+        if (supaResult === false) return res.status(400).json({message: 'Usertag Already Exists, Try Again'});
 
         return res.status(200).json({
             message: 'Valid Credentials',
