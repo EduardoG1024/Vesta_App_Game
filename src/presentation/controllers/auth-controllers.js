@@ -1,5 +1,6 @@
 import express from "express";
-import { SignUpCreator, SignUpValidator, SignUpBcrypt, SignUpFunction } from "../../auth-classes/index.js";
+import { SignUpCreator, SignUpValidator, SignUpBcrypt, SignUpFunction } from "../../domain/auth-classes/index.js";
+import { SignInBcrypt } from "../../domain/login-classes/SignIn-Validator.js";
 
 export class AuthControllers {
 
@@ -36,8 +37,30 @@ export class AuthControllers {
     }
 
     // LOGIN USER
-    static LoginSignIn = (req, res) => {
-        return res.status(200).json({message: 'Login'});
+    static LoginSignIn = async (req, res) => {
+        const {usertag, password} = req.body;
+        if(!usertag || !password)
+            return res.status(400).json({message: 'Oh Moons! Something Went Wrong', error: 'User Credentials NOT Found'});
+
+        const SignIn = await SignInBcrypt(usertag, password);
+        if (!SignIn) return res.status(400).json({message: 'Invalid Credentials, Try Again'});
+
+        req.session.user = {user: usertag};
+
+        return res.status(200).json({
+            message: 'Login Succesful!',
+            data: req.session.user,
+        });
+    }
+
+    // RECOVER USER
+    static RecoverUser = async (req, res) => {
+        const {usertag, email} = req.body;
+        if (!usertag || !email) return res.status(400).json({messgae: 'Not User Found'});
+
+        return res.status(200).json({
+            message: 'You Will See Your Password in Your Email in The Next 24Hr'
+        });
     }
 
 }

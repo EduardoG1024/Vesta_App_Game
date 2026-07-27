@@ -6,5 +6,6 @@ const authRouter = Router();
 authRouter.get('/', AuthControllers.GetVesta);
 authRouter.post('/register', AuthControllers.RegisterSignUp);
 authRouter.post('/login', AuthControllers.LoginSignIn);
+authRouter.post('/recover', AuthControllers.RecoverUser);
 
 export default authRouter;

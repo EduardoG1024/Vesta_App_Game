@@ -3,6 +3,7 @@ import { ProfileControllers } from "../controllers/profile-controllers.js";
 
 const profileRouter = Router();
 
+profileRouter.get('/profiles', ProfileControllers.AllProfiles);
 profileRouter.get('/profile', ProfileControllers.MyProfile);
 profileRouter.post('/update', ProfileControllers.UpdateProfile);
 profileRouter.post('/delete', ProfileControllers.DeleteProfile);
