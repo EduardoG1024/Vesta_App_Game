@@ -59,7 +59,8 @@ export class AuthControllers {
         if (!usertag || !email) return res.status(400).json({messgae: 'Not User Found'});
 
         return res.status(200).json({
-            message: 'You Will See Your Password in Your Email in The Next 24Hr'
+            message: 'Function Not Valid Yet'
+            // message: 'You Will See Your Password in Your Email in The Next 24Hr'
         });
     }
 
