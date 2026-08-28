@@ -1,5 +1,6 @@
 import { UnauthenticatedUser } from "../../middlewares/authentication.js";
-import { RegisterUserUseCase } from "../../use-cases/registerUser.js";
+import { LoginUserUseCase } from "../../use-cases/signInUser-useCase.js";
+import { RegisterUserUseCase } from "../../use-cases/signUpUser-useCase.js";
 
 export class AuthControllers {
 
@@ -27,9 +28,22 @@ export class AuthControllers {
 
     // SIGN IN
     static SignInUser = async (req, res) => {
-        return res.status(200).json({
-            message: 'Login Succesful!'
-        });
+        try {
+            const {usertag, password} = req.body;
+
+            const login = new LoginUserUseCase(usertag, password);
+            const see = await login.execute();
+
+            console.log(see);
+            return res.status(200).json({
+                message: 'Login Succesful!'
+            });
+        } catch (error) {
+            return res.status(200).json({
+                message: 'Uh-oh! We have encountered an unexpected anomaly!',
+                error: error.message
+            });
+        }
     }
 
     // SIGN OUT

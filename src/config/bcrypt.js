@@ -7,5 +7,9 @@ export const CreateHash = async (password) => {
 }
 
 export const CompareHash = async (password, hash) => {
-    return await bcrypt.compare(password, hash);
+    try {
+        return await bcrypt.compare(password, hash);
+    } catch (error) {
+        throw new Error('Error al comparar hash')
+    }
 }

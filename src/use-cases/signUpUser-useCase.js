@@ -1,5 +1,5 @@
 import { CreateHash } from "../config/bcrypt.js";
-import { UserEntity } from "../entity/userEntity.js";
+import { UserEntity } from "../entity/signUp-Entity.js";
 import { AuthRepository } from "../repository/auth-repository.js";
 
 export class RegisterUserUseCase {
