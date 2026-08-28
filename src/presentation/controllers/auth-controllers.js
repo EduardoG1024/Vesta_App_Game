@@ -1,4 +1,5 @@
 import { UnauthenticatedUser } from "../../middlewares/authentication.js";
+import { RegisterUserUseCase } from "../../use-cases/registerUser.js";
 
 export class AuthControllers {
 
@@ -6,19 +7,20 @@ export class AuthControllers {
     static SignUpUser = async (req, res) => {
         try {
             const {usertag, password, confirmPassword} = req.body;
-            if (!usertag || !password || !confirmPassword)
-                throw new Error('User Credentials NOT Found');
+            
+            const register = new RegisterUserUseCase(usertag, password, confirmPassword);
+            const user = await register.execute();
 
 
             return res.status(200).json({
                 message: 'Welcome aboard, astronaut!',
+                date: user
             });
-        } catch (err) {
-            if (err)
-                return res.status(400).json({
-                    message: 'Oh Moons!, Something Went Wrong',
-                    error: err.message
-                });
+        } catch (error) {
+            return res.status(400).json({
+                message: 'Oh Moons!, Something Went Wrong',
+                error: error.message
+            });
         }
         
     }
