@@ -1,66 +1,54 @@
-import express from "express";
-import { SignUpCreator, SignUpValidator, SignUpBcrypt, SignUpFunction } from "../../domain/auth-classes/index.js";
-import { SignInBcrypt } from "../../domain/login-classes/SignIn-Validator.js";
+import { UnauthenticatedUser } from "../../middlewares/authentication.js";
 
 export class AuthControllers {
 
-    constructor() {}
+    // SIGN UP
+    static SignUpUser = async (req, res) => {
+        try {
+            const {usertag, password, confirmPassword} = req.body;
+            if (!usertag || !password || !confirmPassword)
+                throw new Error('User Credentials NOT Found');
 
-    static GetVesta = (req, res) => {
-        return res.status(200).json({message: 'Welcome to VESTA'});
-    }
 
-    // REGISTER USER
-    static RegisterSignUp = async (req, res) => {
-        const {usertag, password, confirmPassword} = req.body;
-        if (!usertag || !password || !confirmPassword)
-            return res.status(400).json({message: 'Oh Moons! Something Went Wrong', error: 'User Credentials NOT Found'});
-
-        
-        const signUp = new SignUpCreator(usertag, password, confirmPassword);
-        const validation = new SignUpValidator(signUp);
-        if (validation.validation !== true) return res.status(400).json(
-            {
-                message: 'Invalid Credentials',
-                hint: 'Verify Your UserTag or Your Password',
+            return res.status(200).json({
+                message: 'Welcome aboard, astronaut!',
             });
+        } catch (err) {
+            if (err)
+                return res.status(400).json({
+                    message: 'Oh Moons!, Something Went Wrong',
+                    error: err.message
+                });
+        }
         
+    }
 
-        const hash = await new SignUpBcrypt(password).passhash();
-        const supaResult = await SignUpFunction(signUp.usertag, hash, signUp.status);
-        if (supaResult === false) return res.status(400).json({message: 'Usertag Already Exists, Try Again'});
-
+    // SIGN IN
+    static SignInUser = async (req, res) => {
         return res.status(200).json({
-            message: 'Valid Credentials',
-            info: `Hello ${signUp.usertag}, Your Account has Been Created!`,
+            message: 'Login Succesful!'
         });
     }
 
-    // LOGIN USER
-    static LoginSignIn = async (req, res) => {
-        const {usertag, password} = req.body;
-        if(!usertag || !password)
-            return res.status(400).json({message: 'Oh Moons! Something Went Wrong', error: 'User Credentials NOT Found'});
+    // SIGN OUT
+    static SignOutUser = async (req, res) => {
+        try {
+            UnauthenticatedUser(req, res);
 
-        const SignIn = await SignInBcrypt(usertag, password);
-        if (!SignIn) return res.status(400).json({message: 'Invalid Credentials, Try Again'});
-
-        req.session.user = {user: usertag};
-
-        return res.status(200).json({
-            message: 'Login Succesful!',
-            data: req.session.user,
-        });
+            return res.status(200).json({
+                message: 'User has Sign Out'
+            });
+        } catch (error) {
+            return res.status(400).json({
+                message: 'Error on SignOut user'
+            });
+        }
     }
 
     // RECOVER USER
     static RecoverUser = async (req, res) => {
-        const {usertag, email} = req.body;
-        if (!usertag || !email) return res.status(400).json({messgae: 'Not User Found'});
-
         return res.status(200).json({
             message: 'Function Not Valid Yet'
-            // message: 'You Will See Your Password in Your Email in The Next 24Hr'
         });
     }
 

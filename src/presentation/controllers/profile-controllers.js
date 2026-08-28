@@ -1,6 +1,4 @@
 import express from "express";
-import { GetAllUsers } from "../../domain/profile-classes/GetAllUsers.js";
-import { UpdateCreatorValidator } from "../../domain/profile-classes/Update-Validator.js";
 
 export class ProfileControllers{
 

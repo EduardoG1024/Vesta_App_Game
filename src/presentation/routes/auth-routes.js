@@ -1,11 +1,11 @@
-import express, { Router } from "express";
+import { Router } from "express";
 import { AuthControllers } from "../controllers/auth-controllers.js";
 
-const authRouter = Router();
+const auth = Router();
 
-authRouter.get('/', AuthControllers.GetVesta);
-authRouter.post('/register', AuthControllers.RegisterSignUp);
-authRouter.post('/login', AuthControllers.LoginSignIn);
-authRouter.post('/recover', AuthControllers.RecoverUser);
+auth.post('/signup', AuthControllers.SignUpUser);
+auth.post('/signin', AuthControllers.SignInUser);
+auth.get('/signout', AuthControllers.SignOutUser);
+auth.post('/recover', AuthControllers.RecoverUser);
 
-export default authRouter;
+export default auth;
