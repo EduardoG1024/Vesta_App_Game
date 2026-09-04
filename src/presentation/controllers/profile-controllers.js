@@ -1,16 +1,19 @@
-import express from "express";
+import { UpdateUserUseCase } from "../../use-cases/profile-userCase/updateUser-useCase.js";
 
 export class ProfileControllers{
 
-    constructor() {}
-
     // GET ALL PROFILES
     static AllProfiles = async (req, res) => {
-        const profiles = await GetAllUsers();
-        return res.status(200).json({
-            message: 'Explore and Connect With more Players!',
-            profiles: profiles
-        });
+        try {
+            return res.status(200).json({
+                message: 'Explore and Connect With more Players!',
+                profiles: profiles
+            });
+        } catch (error) {
+            return res.status(400).json({
+                message: 'Error'
+            });
+        }
     }
 
     // GET PROFILE
@@ -22,14 +25,11 @@ export class ProfileControllers{
 
     // UPDATE PROFILE
     static UpdateProfile = async (req, res) => {
-        const {main, role, level, range, others} = req.body;
-        if (!main || !role || !level || !range || !others) 
-            return res.status(400).json({message: 'You Must Fill All Inputs'});
-
         try {
+            const {main, role, level, rank, others} = req.body;
 
-            const update = await new UpdateCreatorValidator(main, role, level, range, others);
-            await update.UpdateValidator();
+            const update = new UpdateUserUseCase(main, role, level, rank, others);
+            await update.execute(req);
 
             return res.status(200).json({
                 message: 'Profile Updated!',

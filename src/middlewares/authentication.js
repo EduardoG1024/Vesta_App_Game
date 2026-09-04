@@ -1,14 +1,10 @@
 
-export const UnauthorizedUser = (req, res) => {
+export const UnauthorizedUser = (req) => {
     if (!req.session.user)
-        return res.status(403).json({
-            message: 'UNAUTHORIZED USER'
-        });
+        throw new Error('UNAUTHORIZED USER');
 }
 
-export const UnauthenticatedUser = (req, res) => {
+export const UnauthenticatedUser = (req) => {
     if (!req.session.user)
-        return res.status(403).json({
-            message: 'UNAUTHENTICATED USER'
-        });
+        throw new Error('UNAUTHENTICATED USER');
 }

@@ -16,11 +16,11 @@ export class AuthRepository {
 
     static SignInUserDB = async (usertag) => {
         try {
-            const query = `SELECT password FROM users WHERE usertag = $1`;
+            const query = `SELECT id, password FROM users WHERE usertag = $1`;
             const values = [usertag];
             const result = await pool.query(query, values);
 
-            return result.rows[0].password;
+            return result.rows[0];
         } catch (error) {
             console.log('Error en login usuario');
         }

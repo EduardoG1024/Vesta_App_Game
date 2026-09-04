@@ -15,6 +15,7 @@ CREATE TABLE profiles(
     role VARCHAR(50) NOT NULL,
     level INT NOT NULL,
     rank VARCHAR(50) NOT NULL,
+    platform VARCHAR(50) NOT NULL CHECK(platform IN ('PC', 'Xbox', 'PlayStation')),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
