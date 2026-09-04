@@ -10,13 +10,15 @@ CREATE TABLE users(
 
 CREATE TABLE profiles(
     id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    main_character VARCHAR(255) NOT NULL,
-    role VARCHAR(50) NOT NULL,
-    level INT NOT NULL,
-    rank VARCHAR(50) NOT NULL,
-    platform VARCHAR(50) NOT NULL CHECK(platform IN ('PC', 'Xbox', 'PlayStation')),
-    updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+    user_id INT NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+    profile_icon VARCHAR(255) NOT NULL DEFAULT 'Marvel_Rivals/Galacta/Galacta_Icon.webp',
+    profile_nameplate VARCHAR(255) NOT NULL DEFAULT 'Marvel_Rivals/Nameplates/Galacta_Nameplate.webp',
+    main_character VARCHAR(255) NOT NULL DEFAULT 'Jubilee',
+    role VARCHAR(50) NOT NULL DEFAULT 'Strategist' CHECK(role IN('Vanguard','Duelist','Strategist')),
+    level INT NOT NULL DEFAULT 0 CHECK(level >= 0 AND level <= 1000),
+    rank VARCHAR(50) NOT NULL DEFAULT 'Gold' CHECK(rank IN ('Bronze','Silver','Gold','Platinum','Diamond','Grandmaster','Celestial','Eternity','One Above All')),
+    platform VARCHAR(50) NOT NULL CHECK(platform IN ('PC','Xbox','PlayStation')) DEFAULT 'PC',
+    updated_at VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE social(
