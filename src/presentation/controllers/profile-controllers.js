@@ -32,8 +32,7 @@ export class ProfileControllers{
             await update.execute(req);
 
             return res.status(200).json({
-                message: 'Profile Updated!',
-                profile: update,
+                message: 'Profile Updated!'
             });
             
         } catch (err) {
