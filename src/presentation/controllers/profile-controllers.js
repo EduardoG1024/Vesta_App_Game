@@ -26,9 +26,9 @@ export class ProfileControllers{
     // UPDATE PROFILE
     static UpdateProfile = async (req, res) => {
         try {
-            const {main, role, level, rank, others} = req.body;
+            const {main, role, level, rank, platform} = req.body;
 
-            const update = new UpdateUserUseCase(main, role, level, rank, others);
+            const update = new UpdateUserUseCase(main, role, level, rank, platform);
             await update.execute(req);
 
             return res.status(200).json({
