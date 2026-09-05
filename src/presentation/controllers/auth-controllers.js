@@ -11,12 +11,11 @@ export class AuthControllers {
             const {usertag, password, confirmPassword} = req.body;
             
             const register = new RegisterUserUseCase(usertag, password, confirmPassword);
-            const user = await register.execute();
+            await register.execute();
 
 
             return res.status(200).json({
                 message: 'Welcome aboard, astronaut!',
-                date: user
             });
         } catch (error) {
             return res.status(400).json({

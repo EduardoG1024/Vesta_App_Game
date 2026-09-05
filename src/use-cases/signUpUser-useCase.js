@@ -25,9 +25,8 @@ export class RegisterUserUseCase {
 
             const user = new UserEntity(this.usertag, hash);
 
-            const db = await AuthRepository.RegisterUserDB(user.usertag, user.password);
-
-            return db;
+            await AuthRepository.RegisterUserDB(user.usertag, user.password);
+            
         } catch (error) {
             throw new Error(error.message);
         }
